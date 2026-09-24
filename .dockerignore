@@ -1,0 +1,9 @@
+*.exe
+__pycache__
+*.pyc
+*.pyo
+.git
+.gitignore
+.env
+*.pdf
+*.log

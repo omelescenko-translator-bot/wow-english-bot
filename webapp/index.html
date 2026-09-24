@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>WOW English — Aesthetic Botanical Flashcards</title>
+  
+  <!-- Telegram WebApp SDK -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  
+  <!-- Modern Aesthetic Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  
+  <style>
+    /* Critical Initial Baseline Styling */
+    :root {
+      --bg-base: #F6EFE9;
+      --text-primary: #2C2623;
+      --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+    [data-theme="dark"] {
+      --bg-base: #16241B;
+      --text-primary: #E8EDE9;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg-base);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    .tab-content { display: none !important; }
+    .tab-content.active { display: flex !important; flex-direction: column !important; }
+  </style>
+
+  <link rel="stylesheet" href="/style.css?v=17.0" />
+</head>
+<body>
+  <!-- Ambient Soft Botanical Auras -->
+  <div class="ambient-glow ambient-glow-1"></div>
+  <div class="ambient-glow ambient-glow-2"></div>
+
+  <div class="app-container">
+    
+    <!-- Top Aesthetic Header -->
+    <header class="app-header">
+      <div class="user-badge">
+        <div class="avatar-ring">
+          <div class="avatar" id="userAvatar">OM</div>
+        </div>
+        <div class="user-info">
+          <span class="user-name" id="userName">Olga</span>
+        </div>
+      </div>
+      
+      <div class="header-actions">
+        <!-- Language Pair Selector Pill -->
+        <button class="lang-selector-pill" id="langSelectorBtn" title="Выбрать изучаемый язык">
+          <span class="lang-flag-pair" id="langFlagPair">🇷🇺 ➔ 🇬🇧</span>
+          <span class="lang-pair-label" id="langPairLabel">EN</span>
+          <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+
+        <!-- Theme Switcher (Delicate Sun/Moon SVG) -->
+        <button class="icon-action-btn" id="themeToggleBtn" aria-label="Переключить тему" title="Переключить тему">
+          <svg id="themeSunIcon" class="theme-svg" viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        </button>
+        
+        <!-- Streak Counter (Delicate Botanical Leaf Pill) -->
+        <div class="streak-pill" id="streakPill" title="Серия дней обучения">
+          <svg class="leaf-svg-icon" viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path>
+            <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path>
+          </svg>
+          <span class="streak-number" id="streakDays">14</span>
+          <span class="streak-text">дней</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="app-main">
+      
+      <!-- ==================== TAB 1: CARDS ==================== -->
+      <section id="tabPractice" class="tab-content active">
+        
+        <!-- Segmented Filter Control -->
+        <div class="segmented-control-wrapper">
+          <div class="segmented-control" id="segmentedFilters">
+            <div class="segmented-indicator" id="segmentedIndicator"></div>
+            <button class="segment-btn active" data-filter="all">
+              <span>Все</span>
+              <span class="segment-badge" id="countAll">0</span>
+            </button>
+            <button class="segment-btn" data-filter="learning">
+              <span>Учу</span>
+              <span class="segment-badge badge-learning" id="countLearning">0</span>
+            </button>
+            <button class="segment-btn" data-filter="known">
+              <span>Знаю</span>
+              <span class="segment-badge badge-known" id="countKnown">0</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Progress Tracker Bar -->
+        <div class="progress-section">
+          <div class="progress-meta">
+            <div class="progress-step-info">
+              <span class="progress-dot"></span>
+              <span id="cardCounter">—</span>
+            </div>
+            <div class="mode-pill-tag" id="modeBadge">
+              <span class="mode-arrow">RU ➔ EN</span>
+            </div>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" id="progressBar" style="width: 5%;"></div>
+          </div>
+        </div>
+
+        <!-- 3D Interactive Card Scene -->
+        <div class="card-scene-container">
+          <div class="card-scene" id="cardScene">
+            
+            <!-- Gesture Stamps (Delicate) -->
+            <div class="swipe-stamp stamp-known" id="stampKnown">
+              <span>ЗНАЮ</span>
+            </div>
+            <div class="swipe-stamp stamp-learning" id="stampLearning">
+              <span>УЧУ</span>
+            </div>
+            <div class="swipe-stamp stamp-delete" id="stampDelete">
+              <div class="stamp-delete-content">
+                <svg viewBox="0 0 24 24" width="26" height="26" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="3 6 5 6 21 6"></polyline>
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                  <line x1="10" y1="11" x2="10" y2="17"></line>
+                  <line x1="14" y1="11" x2="14" y2="17"></line>
+                </svg>
+                <span>УДАЛИТЬ</span>
+              </div>
+            </div>
+
+            <!-- The Flippable Card -->
+            <div class="flashcard" id="flashcard">
+              
+              <!-- Front Side -->
+              <div class="card-face card-front" id="cardFrontFace">
+                <div class="card-top-bar">
+                  <div class="category-chip" id="frontCategoryChip">
+                    <svg class="chip-svg" viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+                      <line x1="7" y1="7" x2="7.01" y2="7"></line>
+                    </svg>
+                    <span class="category-text" id="frontCategory">Общее</span>
+                  </div>
+                  <div class="lang-indicator">
+                    <span class="lang-pill" id="frontLangTag">РУССКИЙ</span>
+                    <button class="speaker-circle-btn" id="frontSpeakBtn" title="Послушать произношение" aria-label="Послушать произношение">
+                      <svg class="speaker-icon" viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                        <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="card-center-body">
+                  <div class="card-phrase-text" id="phraseFront">Загрузка карточек...</div>
+                </div>
+
+                <div class="card-bottom-hint">
+                  <div class="hint-pill">
+                    <svg class="hint-flip-svg" viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="1 4 1 10 7 10"></polyline>
+                      <polyline points="23 20 23 14 17 14"></polyline>
+                      <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path>
+                    </svg>
+                    <span id="frontHint">Перевернуть</span>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Back Side -->
+              <div class="card-face card-back" id="cardBackFace">
+                <div class="card-top-bar">
+                  <div class="category-chip category-chip-en" id="backCategoryChip" title="Нажмите, чтобы изменить категорию">
+                    <svg class="chip-svg" viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <line x1="2" y1="12" x2="22" y2="12"></line>
+                      <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                    </svg>
+                    <span class="category-text" id="backCategory">English</span>
+                  </div>
+                  <div class="lang-indicator">
+                    <span class="lang-pill pill-en" id="backLangTag">ENGLISH</span>
+                    <button class="speaker-circle-btn" id="backSpeakBtn" title="Послушать произношение" aria-label="Послушать произношение">
+                      <svg class="speaker-icon" viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                        <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="card-center-body">
+                  <div class="card-phrase-text en-glow" id="phraseBack">...</div>
+                </div>
+
+                <div class="card-bottom-hint">
+                  <div class="hint-pill">
+                    <svg class="hint-flip-svg" viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="1 4 1 10 7 10"></polyline>
+                      <polyline points="23 20 23 14 17 14"></polyline>
+                      <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path>
+                    </svg>
+                    <span id="backHint">Перевернуть</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Floating Glass Action Controls Bar with Thin Vector SVGs -->
+        <div class="action-controls-bar">
+          <!-- Button: ЗНАЮ (Left: Swipe Left) -->
+          <button class="action-btn btn-action-known" id="btnKnown" aria-label="Знаю карточку">
+            <svg class="btn-svg-icon" viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="8 12 11 15 16 9"></polyline>
+            </svg>
+            <span class="action-btn-title" id="lblBtnKnown">Знаю</span>
+            <span class="action-btn-sub" id="lblBtnKnownSub">Свайп влево</span>
+          </button>
+          
+          <!-- Button: УДАЛИТЬ (Center: Swipe Down) -->
+          <button class="action-btn btn-action-delete" id="btnDeleteCard" aria-label="Удалить карточку">
+            <svg class="btn-svg-icon btn-icon-delete" viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="3 6 5 6 21 6"></polyline>
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+              <line x1="10" y1="11" x2="10" y2="17"></line>
+              <line x1="14" y1="11" x2="14" y2="17"></line>
+            </svg>
+            <span class="action-btn-title" id="lblBtnDelete">Удалить</span>
+            <span class="action-btn-sub" id="lblBtnDeleteSub">Свайп вниз</span>
+          </button>
+          
+          <!-- Button: УЧУ (Right: Swipe Right) -->
+          <button class="action-btn btn-action-learning" id="btnLearning" aria-label="Повторить карточку">
+            <svg class="btn-svg-icon" viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <span class="action-btn-title" id="lblBtnLearning">Учу</span>
+            <span class="action-btn-sub" id="lblBtnLearningSub">Свайп вправо</span>
+          </button>
+        </div>
+
+      </section>
+
+      <!-- ==================== TAB 2: DICTIONARY ==================== -->
+      <section id="tabDictionary" class="tab-content">
+        <!-- Dictionary Sub-tabs: List vs Groups -->
+        <div class="dict-subtabs-wrapper">
+          <div class="dict-subtabs">
+            <button type="button" class="dict-subtab-btn active" id="subtabDictList" data-subtab="list">
+              <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+              </svg>
+              <span>Словарь</span>
+            </button>
+            <button type="button" class="dict-subtab-btn" id="subtabDictGroups" data-subtab="groups">
+              <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+              </svg>
+              <span>Группы</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Subview 1: Full Vocabulary List -->
+        <div id="dictSubviewList" class="dict-subview active">
+          <div class="dict-top-bar">
+            <div class="search-input-wrapper">
+              <svg class="search-icon-svg" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input type="text" id="searchInput" placeholder="Поиск слова или перевода..." autocomplete="off" />
+              <button class="clear-search-btn" id="clearSearchBtn" style="display: none;">✕</button>
+            </div>
+            <button class="btn-primary-add" id="btnOpenAddModal">
+              <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+              <span>Добавить</span>
+            </button>
+          </div>
+
+          <!-- Dynamic AI Category Pills Filter Carousel -->
+          <div class="category-filter-carousel" id="categoryFilterCarousel" style="display: none;">
+            <!-- Dynamically populated by renderCategoryFilters() -->
+          </div>
+
+          <div class="dict-summary-row">
+            <span>В словаре: <b id="dictTotalCount">0</b> карточек</span>
+            <button class="btn-export-link" id="btnExportExcelLink">Экспорт в Excel</button>
+          </div>
+
+          <div class="dict-scroll-area" id="dictList">
+            <!-- Populated dynamically with beautiful glass cards -->
+          </div>
+        </div>
+
+        <!-- Subview 2: Groups Structure (10 phrases per group) -->
+        <div id="dictSubviewGroups" class="dict-subview" style="display: none;">
+          <div class="dict-top-bar">
+            <div class="search-input-wrapper">
+              <svg class="search-icon-svg" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input type="text" id="groupsSearchInput" placeholder="Поиск слова или группы..." autocomplete="off" />
+              <button class="clear-search-btn" id="clearGroupsSearchBtn" style="display: none;">✕</button>
+            </div>
+          </div>
+
+          <div class="dict-summary-row">
+            <span>Всего групп: <b id="groupsTotalCount">0</b></span>
+            <div class="groups-legend-pills">
+              <span class="legend-pill pill-new"><span class="legend-dot dot-new"></span> Не изучена</span>
+              <span class="legend-pill pill-progress"><span class="legend-dot dot-progress"></span> В процессе</span>
+              <span class="legend-pill pill-mastered"><span class="legend-dot dot-mastered"></span> Изучена</span>
+            </div>
+          </div>
+
+          <div class="groups-scroll-area" id="groupsListContainer">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+
+        <!-- Touch-Friendly Interactive Fast Scroller Widget -->
+        <div class="fast-scroller-track" id="dictFastScrollerTrack" title="Быстрая прокрутка словаря">
+          <div class="fast-scroller-thumb" id="dictFastScrollerThumb">
+            <svg class="scroller-icon-svg" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="7 15 12 20 17 15"></polyline>
+              <polyline points="7 9 12 4 17 9"></polyline>
+            </svg>
+            <div class="scroller-bubble" id="scrollerBubble">1 / 91</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== TAB: TRAINER / ТРЕНАЖЁР ==================== -->
+      <section id="tabTrainer" class="tab-content">
+        
+        <!-- 1. STEP 1: CHOOSE TRAINING FORMAT (По группам vs По словам) -->
+        <div id="trainerStep1View" class="trainer-step-view">
+          <div class="trainer-header-card">
+            <div class="trainer-badge-pill">🎯 ИНТЕНСИВ-ТРЕНАЖЁР</div>
+            <h2>Шаг 1 • Что тренировать?</h2>
+            <p>Выберите формат тренировки фраз для быстрого закрепления:</p>
+          </div>
+
+          <div class="trainer-step-options-grid">
+            <!-- Option 1: По группам -->
+            <div class="trainer-step-card-option" id="btnSelectModeGroups">
+              <div class="step-card-icon-box">📁</div>
+              <div class="step-card-text-wrap">
+                <div class="step-card-title">По группам</div>
+                <div class="step-card-desc">Тренировка фраз блоками по 10 штук (1 группа, 2 группа...)</div>
+              </div>
+              <div class="step-card-arrow">➔</div>
+            </div>
+
+            <!-- Option 2: По словам (с красным индикатором) -->
+            <div class="trainer-step-card-option" id="btnSelectModeRedWords">
+              <div class="step-card-icon-box step-icon-red">🔴</div>
+              <div class="step-card-text-wrap">
+                <div class="step-card-title-row">
+                  <div class="step-card-title">По словам</div>
+                  <span class="badge-red-pill" id="badgeRedCardsStep1">0 фраз</span>
+                </div>
+                <div class="step-card-desc">Отработка сложных фраз с красным индикатором (где были ошибки)</div>
+              </div>
+              <div class="step-card-arrow">➔</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. STEP 2: CHOOSE GROUPS (Skipped if "По словам" selected) -->
+        <div id="trainerStep2View" class="trainer-step-view" style="display: none;">
+          <div class="step-nav-bar">
+            <button type="button" class="btn-step-back" id="btnStep2Back">
+              <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.4" fill="none"><polyline points="15 18 9 12 15 6"></polyline></svg>
+              <span>Назад</span>
+            </button>
+            <div class="step-indicator-pill">Шаг 2 из 3</div>
+          </div>
+
+          <div class="trainer-header-card" style="margin-top: 8px;">
+            <h2>Шаг 2 • Выберите группу(ы)</h2>
+            <p>Отметьте галочками группы для изучения:</p>
+          </div>
+
+          <div class="trainer-setup-card">
+            <div class="trainer-card-head">
+              <h3 id="step2SelectedCountLabel">Выбрано групп: 1</h3>
+              <button type="button" class="btn-text-link" id="btnToggleAllGroups">Выбрать все</button>
+            </div>
+            <div class="trainer-groups-checklist" id="trainerGroupsChecklist">
+              <!-- Dynamically rendered -->
+            </div>
+          </div>
+
+          <div class="trainer-step-action-row">
+            <button type="button" class="btn-trainer-start" id="btnStep2Next">
+              <span>Далее к упражнениям ➔</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 3. STEP 3: CHOOSE EXERCISE MECHANICS & LAUNCH -->
+        <div id="trainerStep3View" class="trainer-step-view" style="display: none;">
+          <div class="step-nav-bar">
+            <button type="button" class="btn-step-back" id="btnStep3Back">
+              <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.4" fill="none"><polyline points="15 18 9 12 15 6"></polyline></svg>
+              <span>Назад</span>
+            </button>
+            <div class="step-indicator-pill" id="step3IndicatorPill">Шаг 3 из 3</div>
+          </div>
+
+          <div class="trainer-header-card" style="margin-top: 8px;">
+            <h2>Шаг 3 • Выберите механики упражнений</h2>
+            <p>Отметьте типы заданий, которые хотите отрабатывать:</p>
+          </div>
+
+          <div class="trainer-setup-card">
+            <div class="trainer-card-head">
+              <h3>Типы упражнений</h3>
+              <button type="button" class="btn-text-link" id="btnSelectAllMechanics">Выбрать все</button>
+            </div>
+            
+            <div class="mechanics-grid">
+              <label class="mechanic-checkbox-card" for="mechCards">
+                <input type="checkbox" id="mechCards" class="custom-chk" checked />
+                <div class="mech-info">
+                  <div class="mech-title">🃏 3D-Карточки</div>
+                  <div class="mech-desc">Вспомнить перевод, перевернуть тапом и проверить себя</div>
+                </div>
+              </label>
+
+              <label class="mechanic-checkbox-card" for="mechBuilder">
+                <input type="checkbox" id="mechBuilder" class="custom-chk" checked />
+                <div class="mech-info">
+                  <div class="mech-title">🧩 Конструктор предложений</div>
+                  <div class="mech-desc">Собрать английскую фразу из рассыпанных слов</div>
+                </div>
+              </label>
+
+              <label class="mechanic-checkbox-card" for="mechCloze">
+                <input type="checkbox" id="mechCloze" class="custom-chk" checked />
+                <div class="mech-info">
+                  <div class="mech-title">✍️ Пропущенное слово</div>
+                  <div class="mech-desc">Вставить ключевое слово или предлог в предложение</div>
+                </div>
+              </label>
+
+              <label class="mechanic-checkbox-card" for="mechSprint">
+                <input type="checkbox" id="mechSprint" class="custom-chk" checked />
+                <div class="mech-info">
+                  <div class="mech-title">⚡ Спринт-квиз</div>
+                  <div class="mech-desc">Быстрый выбор 1 правильного перевода из 4 вариантов</div>
+                </div>
+              </label>
+
+              <label class="mechanic-checkbox-card" for="mechAudio">
+                <input type="checkbox" id="mechAudio" class="custom-chk" />
+                <div class="mech-info">
+                  <div class="mech-title">🎧 Аудио-диктант</div>
+                  <div class="mech-desc">Прослушать фразу на слух и сопоставить с переводом</div>
+                </div>
+              </label>
+
+              <label class="mechanic-checkbox-card" for="mechVoice">
+                <input type="checkbox" id="mechVoice" class="custom-chk" />
+                <div class="mech-info">
+                  <div class="mech-title">🎙️ Разговорный тренажёр</div>
+                  <div class="mech-desc">Проговорить фразу вслух и потренировать произношение</div>
+                </div>
+              </label>
+
+              <label class="mechanic-checkbox-card" for="mechNews">
+                <input type="checkbox" id="mechNews" class="custom-chk" checked />
+                <div class="mech-info">
+                  <div class="mech-title">📰 Новости / тексты</div>
+                  <div class="mech-desc">Чтение реальных новостей и историй из интернета с изучаемыми фразами</div>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Start Workout Action Button -->
+          <div class="trainer-start-action-row">
+            <button type="button" class="btn-trainer-start" id="btnStartWorkout">
+              <span id="btnStartWorkoutText">🚀 Начать тренировку (10 фраз)</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 4. WORKOUT ACTIVE ARENA VIEW -->
+        <div id="trainerWorkoutView" class="trainer-step-view" style="display: none;">
+          <!-- Workout Top Navigation Bar -->
+          <div class="workout-top-bar">
+            <button type="button" class="workout-back-btn" id="btnWorkoutBack" title="Назад">
+              <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+              <span>Назад</span>
+            </button>
+            <div class="workout-round-info">
+              <span id="workoutRoundBadge" class="workout-round-badge">Раунд 1</span>
+            </div>
+            <button type="button" class="workout-sound-btn" id="btnWorkoutMuteToggle" title="Звук (вкл/выкл)">
+              <svg id="workoutSoundOnIcon" viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+              </svg>
+              <svg id="workoutSoundOffIcon" viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                <line x1="23" y1="9" x2="17" y2="15"></line>
+                <line x1="17" y1="9" x2="23" y2="15"></line>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Exercise Active Container (with exercise mechanic in top-left and circles in top-right) -->
+          <div class="workout-arena" id="workoutArena">
+            <!-- Dynamic Exercise Widget -->
+          </div>
+        </div>
+
+        <!-- 5. COMPLETION / CELEBRATION VIEW -->
+        <div id="trainerCompletionView" class="trainer-step-view" style="display: none;">
+          <div class="completion-card">
+            <div class="completion-trophy">🏆</div>
+            <h2>Отличный результат!</h2>
+            <p id="completionSubtitle">Все выбранные фразы успешно освоены и закрыты на 100%!</p>
+
+            <div class="completion-stats-grid">
+              <div class="completion-stat-box">
+                <div class="stat-num text-green" id="compGreenCount">10</div>
+                <div class="stat-lbl">Выучено</div>
+              </div>
+              <div class="completion-stat-box">
+                <div class="stat-num" id="compTotalCount">10</div>
+                <div class="stat-lbl">Всего фраз</div>
+              </div>
+            </div>
+
+            <div class="completion-actions-stack">
+              <!-- Primary Action Button -->
+              <button type="button" class="btn-primary-gradient" id="btnNextGroupSelection">
+                <span>➡️ Выбрать следующие группы</span>
+              </button>
+
+              <!-- Secondary Reset Result Button with explicit explanation text -->
+              <button type="button" class="btn-reset-outline" id="btnResetGroupProgress">
+                <div class="reset-btn-title">🔄 Сбросить результат</div>
+                <div class="reset-btn-sub">(обнуляет зелёный статус группы для повторного закрепления)</div>
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ==================== TAB 3: STATS ==================== -->
+      <section id="tabStats" class="tab-content">
+        
+        <!-- Hero Mastery Card -->
+        <div class="mastery-hero-card">
+          <div class="mastery-circle-wrap">
+            <svg class="circle-chart" viewBox="0 0 36 36">
+              <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+              <path class="circle-progress" id="circleProgressPath" stroke-dasharray="0, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+            </svg>
+            <div class="circle-center-text">
+              <span class="mastery-percent" id="masteryPercent">0%</span>
+              <span class="mastery-label">Освоено</span>
+            </div>
+          </div>
+          <div class="mastery-info">
+            <h3>Уровень: Intermediate B1</h3>
+            <p>Интервальные повторения Spaced Repetition для долгосрочной памяти.</p>
+          </div>
+        </div>
+
+        <!-- Bento Grid Stats -->
+        <div class="bento-stats-grid">
+          <div class="bento-card bento-total">
+            <div class="bento-header">
+              <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+              </svg>
+              <span class="bento-tag">Словарь</span>
+            </div>
+            <div class="bento-val" id="statTotal">76</div>
+            <div class="bento-lbl">Всего карточек</div>
+          </div>
+
+          <div class="bento-card bento-known">
+            <div class="bento-header">
+              <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              <span class="bento-tag tag-green">Знаю</span>
+            </div>
+            <div class="bento-val text-green" id="statKnown">0</div>
+            <div class="bento-lbl">Твердые знания</div>
+          </div>
+
+          <div class="bento-card bento-learning">
+            <div class="bento-header">
+              <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              <span class="bento-tag tag-amber">Учу</span>
+            </div>
+            <div class="bento-val text-amber" id="statLearning">76</div>
+            <div class="bento-lbl">В процессе</div>
+          </div>
+
+          <div class="bento-card bento-streak">
+            <div class="bento-header">
+              <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path>
+              </svg>
+              <span class="bento-tag tag-fire">Серия</span>
+            </div>
+            <div class="bento-val text-fire" id="statStreak">14</div>
+            <div class="bento-lbl">Дней подряд</div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ==================== TAB 4: ADMIN ANALYTICS ==================== -->
+      <section id="tabAnalytics" class="tab-content">
+        
+        <!-- Analytics Top Bar -->
+        <div class="admin-top-bar">
+          <div class="admin-title-wrap">
+            <span class="admin-badge">ADMIN</span>
+            <h2>Метрики & Аудитория</h2>
+          </div>
+          <button class="btn-export-excel-pill" id="btnAdminExportExcel">
+            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            <span>Excel отчёт</span>
+          </button>
+        </div>
+
+        <!-- 4 KPI Bento Cards -->
+        <div class="admin-kpi-grid">
+          <div class="admin-kpi-card">
+            <div class="admin-kpi-top">
+              <span class="admin-kpi-lbl">Всего пользователей</span>
+              <span class="admin-kpi-badge badge-blue" id="adminNewTodayTag">+0 сегодня</span>
+            </div>
+            <div class="admin-kpi-val" id="adminTotalUsers">0</div>
+            <div class="admin-kpi-sub">Запустили тренажёр</div>
+          </div>
+
+          <div class="admin-kpi-card">
+            <div class="admin-kpi-top">
+              <span class="admin-kpi-lbl">Прирост (7 дней)</span>
+              <span class="admin-kpi-badge badge-green" id="adminGrowthTag">Новые</span>
+            </div>
+            <div class="admin-kpi-val text-green" id="adminNew7d">0</div>
+            <div class="admin-kpi-sub">Регистраций за неделю</div>
+          </div>
+
+          <div class="admin-kpi-card">
+            <div class="admin-kpi-top">
+              <span class="admin-kpi-lbl">Активных сегодня</span>
+              <span class="admin-kpi-badge badge-amber" id="adminDauTag">DAU</span>
+            </div>
+            <div class="admin-kpi-val text-amber" id="adminActiveToday">0</div>
+            <div class="admin-kpi-sub"><span id="adminActive7d">0</span> за 7 дней (WAU)</div>
+          </div>
+
+          <div class="admin-kpi-card">
+            <div class="admin-kpi-top">
+              <span class="admin-kpi-lbl">Всего карточек в базе</span>
+              <span class="admin-kpi-badge badge-purple" id="adminAvgCardsTag">0 ср./чел</span>
+            </div>
+            <div class="admin-kpi-val text-purple" id="adminTotalCards">0</div>
+            <div class="admin-kpi-sub"><span id="adminKnownCards">0</span> выучено / <span id="adminLearningCards">0</span> в процессе</div>
+          </div>
+        </div>
+
+        <!-- 7-Day Activity Chart Card -->
+        <div class="admin-chart-card">
+          <div class="admin-chart-header">
+            <h3>Динамика активности (последние 7 дней)</h3>
+            <span class="chart-legend"><span class="dot-legend"></span> Активные пользователи</span>
+          </div>
+          <div class="admin-bars-container" id="adminActivityBars">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <!-- Language Distribution Bento Card -->
+        <div class="admin-chart-card admin-lang-breakdown-card">
+          <div class="admin-card-header">
+            <h3>🌍 Распределение по изучаемым языкам</h3>
+            <span class="admin-card-sub" id="adminTotalLangsCount">8 языков</span>
+          </div>
+          <div class="admin-lang-list" id="adminLangDistributionList">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <!-- Users Table & Search -->
+        <div class="admin-users-section">
+          <div class="admin-users-header">
+            <h3>Список учеников (<span id="adminUsersCount">0</span>)</h3>
+            <div class="admin-search-wrap">
+              <input type="text" id="adminSearchInput" placeholder="Поиск по имени или @нику..." />
+            </div>
+          </div>
+          <div class="admin-users-list" id="adminUsersList">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ==================== TAB 4: SUPPORT / ПОМОЩЬ ==================== -->
+      <section id="tabSupport" class="tab-content">
+        <div class="support-tab-container">
+          <div class="support-header-card">
+            <div class="support-icon-wrap">💬</div>
+            <h2 id="supportTabTitle">Связь с разработчиком & Поддержка</h2>
+            <p id="supportTabSubtitle">Есть идея, вопрос или нашли ошибку? Напишите нам, и разработчик ответит вам прямо в боте!</p>
+          </div>
+
+          <div class="support-card-form">
+            <label class="form-label" id="supportTabCatLabel">Выберите тему:</label>
+            <div class="support-chips-grid" id="supportTabChipsGrid">
+              <button type="button" class="support-chip active" data-cat="💡 Идея / Предложение">💡 Идея</button>
+              <button type="button" class="support-chip" data-cat="❓ Вопрос">❓ Вопрос</button>
+              <button type="button" class="support-chip" data-cat="🐛 Ошибка / Баг">🐛 Ошибка</button>
+              <button type="button" class="support-chip" data-cat="💌 Отзыв">💌 Отзыв</button>
+            </div>
+
+            <div class="form-group" style="margin-top: 14px;">
+              <label class="form-label" for="supportTabMessageInput" id="supportTabMsgLabel">Ваше сообщение:</label>
+              <textarea id="supportTabMessageInput" class="support-textarea" rows="4" placeholder="Опишите вашу идею, вопрос или пожелание..."></textarea>
+            </div>
+
+            <div class="support-actions-row">
+              <button type="button" class="btn-direct-tg" id="btnTabDirectTg">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.75-.55 2.93-1.28 4.88-2.12 5.86-2.54 2.79-1.17 3.37-1.37 3.75-1.37.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/></svg>
+                <span id="btnTabDirectTgSpan">Написать в Telegram</span>
+              </button>
+              <button type="button" class="btn-submit-action" id="btnSendTabSupport">
+                <span id="btnSendTabSupportSpan">Отправить</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Floating Glass Bottom Navigation Dock with Delicate Outline SVGs -->
+    <nav class="bottom-dock-nav">
+      <div class="dock-pill-container">
+        <button class="dock-tab active" data-tab="tabPractice" id="dockTabPractice">
+          <svg class="dock-icon-svg" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+            <path d="M16 3H8a2 2 0 0 0-2 2v2h12V5a2 2 0 0 0-2-2z"></path>
+          </svg>
+          <span class="dock-label">Карточки</span>
+        </button>
+        
+        <button class="dock-tab" data-tab="tabDictionary" id="dockTabDictionary">
+          <svg class="dock-icon-svg" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+          </svg>
+          <span class="dock-label">Словарь</span>
+        </button>
+
+        <!-- Core Study Tab: Trainer -->
+        <button class="dock-tab" id="dockTabTrainer" data-tab="tabTrainer">
+          <svg class="dock-icon-svg" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <circle cx="12" cy="12" r="6"></circle>
+            <circle cx="12" cy="12" r="2"></circle>
+          </svg>
+          <span class="dock-label">Тренажёр</span>
+        </button>
+        
+        <button class="dock-tab" data-tab="tabStats" id="dockTabStats">
+          <svg class="dock-icon-svg" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="20" x2="18" y2="10"></line>
+            <line x1="12" y1="20" x2="12" y2="4"></line>
+            <line x1="6" y1="20" x2="6" y2="14"></line>
+          </svg>
+          <span class="dock-label">Прогресс</span>
+        </button>
+
+        <!-- For Regular Users: Tab Support / Help -->
+        <button class="dock-tab" id="dockTabSupport" data-tab="tabSupport">
+          <svg class="dock-icon-svg" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+          </svg>
+          <span class="dock-label">Помощь</span>
+        </button>
+
+        <!-- For Admin: Tab Analytics -->
+        <button class="dock-tab" id="dockTabAnalytics" data-tab="tabAnalytics" style="display: none;">
+          <svg class="dock-icon-svg" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 20V10"></path>
+            <path d="M12 20V4"></path>
+            <path d="M6 20V14"></path>
+          </svg>
+          <span class="dock-label">Аналитика</span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Modal: Add New Phrase / Bulk Import -->
+    <div class="modal-backdrop" id="addModal" style="display: none;">
+      <div class="modal-card">
+        <div class="modal-drag-indicator"></div>
+        
+        <div class="modal-top-bar">
+          <div class="modal-tab-toggle">
+            <button class="modal-toggle-btn active" id="tabModeSingle">1 фраза</button>
+            <button class="modal-toggle-btn" id="tabModeBulk">Пачкой (Excel)</button>
+          </div>
+          <button class="modal-close-btn" id="btnCloseModal" aria-label="Закрыть модальное окно">✕</button>
+        </div>
+
+        <!-- Form 1: Single Phrase with Live AI Translation -->
+        <div class="modal-content-body" id="modalSingleBody">
+          <!-- AI Translation Live Status Pill -->
+          <div class="ai-status-badge" id="aiStatusBadge">
+            <span class="ai-sparkle-dot">✨</span>
+            <span class="ai-status-text" id="aiStatusText">AI автоперевод активен</span>
+            <div class="ai-spinner" id="aiSpinner" style="display: none;"></div>
+          </div>
+
+          <div class="form-group">
+            <div class="form-label-row">
+              <label for="newPhraseEn">Фраза на английском (English):</label>
+              <span class="field-lang-tag">EN</span>
+            </div>
+            <div class="input-with-actions">
+              <input type="text" id="newPhraseEn" placeholder="например: Keep me in the loop" autocomplete="off" />
+              <button type="button" class="input-action-btn btn-ai-action" id="btnTranslateEn" title="Перевести на русский с помощью AI">✨</button>
+              <button type="button" class="input-action-btn btn-clear-action" id="btnClearEn" title="Очистить" style="display: none;">✕</button>
+            </div>
+          </div>
+          
+          <div class="swap-row">
+            <button type="button" class="btn-swap-fields" id="btnSwapFields" title="Поменять местами English ⇄ Русский">
+              <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 16V4m0 0L3 8m4-4l4 4m10 4v12m0 0l4-4m-4 4l-4-4"/>
+              </svg>
+              <span>Поменять местами</span>
+            </button>
+          </div>
+
+          <div class="form-group">
+            <div class="form-label-row">
+              <label for="newPhraseRu">Перевод на русский (Russian):</label>
+              <span class="field-lang-tag">RU</span>
+            </div>
+            <div class="input-with-actions">
+              <input type="text" id="newPhraseRu" placeholder="например: Держи меня в курсе" autocomplete="off" />
+              <button type="button" class="input-action-btn btn-ai-action" id="btnTranslateRu" title="Перевести на английский с помощью AI">✨</button>
+              <button type="button" class="input-action-btn btn-clear-action" id="btnClearRu" title="Очистить" style="display: none;">✕</button>
+            </div>
+          </div>
+
+          <!-- Interactive AI Alternatives Suggestions Carousel / Chips -->
+          <div class="ai-alternatives-box" id="aiAlternativesBox" style="display: none;">
+            <div class="ai-alt-header">
+              <svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+              </svg>
+              <span>Живые разговорные варианты:</span>
+            </div>
+            <div class="ai-alt-chips" id="aiAltChips"></div>
+          </div>
+
+          <div class="form-group">
+            <div class="form-label-row">
+              <label for="newCategorySelect">Категория:</label>
+              <span class="auto-category-tag" id="autoCategoryTag" style="display: none;">✨ AI категория</span>
+            </div>
+            <select id="newCategorySelect" class="form-select">
+              <option value="Разговорный / Общее">Разговорный / Общее</option>
+              <option value="Деловая переписка">Деловая переписка</option>
+              <option value="Логистика и ВЭД">Логистика и ВЭД</option>
+              <option value="Собеседование">Собеседование</option>
+            </select>
+          </div>
+          
+          <button class="btn-submit-action" id="btnSaveNewWord">
+            <span>Сохранить в карточки</span>
+          </button>
+        </div>
+
+        <!-- Form 2: Bulk Import -->
+        <div class="modal-content-body" id="modalBulkBody" style="display: none;">
+          <div class="form-group">
+            <label for="bulkTextInput">Вставьте строки из Excel или чата:</label>
+            <textarea id="bulkTextInput" rows="6" placeholder="Скопируйте 2 колонки из Excel или текст вида:&#10;To keep you posted - Держать в курсе&#10;Shorten the lead time — Сократить срок доставки"></textarea>
+          </div>
+          
+          <div class="bulk-detection-pill" id="bulkPreviewInfo">
+            Найдено карточек: <b id="bulkCount">0</b>
+          </div>
+          
+          <button class="btn-submit-action" id="btnSaveBulk">
+            <span>Импортировать все фразы</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Modal: Language Picker (Native & Target Languages) -->
+    <div class="modal-backdrop" id="modalLanguagePicker" style="display: none;">
+      <div class="modal-card">
+        <div class="modal-drag-indicator"></div>
+        
+        <div class="modal-top-bar">
+          <div class="modal-title-row">
+            <span class="modal-emoji-icon">🌍</span>
+            <div class="modal-title-text">
+              <h3>Выбор языков</h3>
+              <p class="modal-subtitle">Родной язык и язык для изучения</p>
+            </div>
+          </div>
+          <button class="modal-close-btn" id="btnCloseLangModal" aria-label="Закрыть">✕</button>
+        </div>
+
+        <div class="modal-content-body">
+          <div class="lang-modal-section">
+            <label class="lang-section-label">1. Мой родной язык:</label>
+            <div class="lang-grid" id="nativeLangGrid">
+              <button type="button" class="lang-opt-pill active" data-lang="ru">
+                <span class="lang-opt-flag">🇷🇺</span>
+                <span class="lang-opt-name">Русский</span>
+              </button>
+              <button type="button" class="lang-opt-pill" data-lang="uk">
+                <span class="lang-opt-flag">🇺🇦</span>
+                <span class="lang-opt-name">Українська</span>
+              </button>
+              <button type="button" class="lang-opt-pill" data-lang="en">
+                <span class="lang-opt-flag">🇬🇧</span>
+                <span class="lang-opt-name">English</span>
+              </button>
+              <button type="button" class="lang-opt-pill" data-lang="es">
+                <span class="lang-opt-flag">🇪🇸</span>
+                <span class="lang-opt-name">Español</span>
+              </button>
+              <button type="button" class="lang-opt-pill" data-lang="fr">
+                <span class="lang-opt-flag">🇫🇷</span>
+                <span class="lang-opt-name">Français</span>
+              </button>
+              <button type="button" class="lang-opt-pill" data-lang="de">
+                <span class="lang-opt-flag">🇩🇪</span>
+                <span class="lang-opt-name">Deutsch</span>
+              </button>
+              <button type="button" class="lang-opt-pill" data-lang="it">
+                <span class="lang-opt-flag">🇮🇹</span>
+                <span class="lang-opt-name">Italiano</span>
+              </button>
+              <button type="button" class="lang-opt-pill" data-lang="sl">
+                <span class="lang-opt-flag">🇸🇮</span>
+                <span class="lang-opt-name">Slovenščina</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="lang-modal-section" style="margin-top: 16px;">
+            <label class="lang-section-label">2. Я хочу учить:</label>
+            <div class="lang-grid" id="targetLangGrid">
+              <button type="button" class="lang-opt-pill active" data-lang="en">
+                <span class="lang-opt-flag">🇬🇧</span>
+                <span class="lang-opt-name">English</span>
+              </button>
+              <button type="button" class="lang-opt-pill" data-lang="uk">
+                <span class="lang-opt-flag">🇺🇦</span>
+                <span class="lang-opt-name">Українська</span>
+              </button>
+              <button type="button" class="lang-opt-pill" data-lang="es">
+                <span class="lang-opt-flag">🇪🇸</span>
+                <span class="lang-opt-name">Español</span>
+              </button>
+              <button type="button" class="lang-opt-pill" data-lang="fr">
+                <span class="lang-opt-flag">🇫🇷</span>
+                <span class="lang-opt-name">Français</span>
+              </button>
+              <button type="button" class="lang-opt-pill" data-lang="de">
+                <span class="lang-opt-flag">🇩🇪</span>
+                <span class="lang-opt-name">Deutsch</span>
+              </button>
+              <button type="button" class="lang-opt-pill" data-lang="it">
+                <span class="lang-opt-flag">🇮🇹</span>
+                <span class="lang-opt-name">Italiano</span>
+              </button>
+              <button type="button" class="lang-opt-pill" data-lang="sl">
+                <span class="lang-opt-flag">🇸🇮</span>
+                <span class="lang-opt-name">Slovenščina</span>
+              </button>
+              <button type="button" class="lang-opt-pill" data-lang="ru">
+                <span class="lang-opt-flag">🇷🇺</span>
+                <span class="lang-opt-name">Русский</span>
+              </button>
+            </div>
+          </div>
+
+          <button class="btn-submit-action" id="btnSaveLanguages" style="margin-top: 20px;">
+            <span>Сохранить выбор</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Support & Feedback Modal -->
+    <div class="modal-backdrop" id="modalSupport" style="display: none;">
+      <div class="modal-dialog modal-dialog-support">
+        <div class="modal-header">
+          <div class="modal-title-wrap">
+            <div class="modal-icon-badge">💬</div>
+            <div class="modal-title-text">
+              <h3 id="modalSupportTitle">Связь с разработчиком</h3>
+              <p class="modal-subtitle" id="modalSupportSubtitle">Есть идея, вопрос или нашли ошибку? Напишите нам!</p>
+            </div>
+          </div>
+          <button class="modal-close-btn" id="btnCloseSupportModal" aria-label="Закрыть">
+            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+
+        <div class="modal-content-body">
+          <div class="support-category-group">
+            <label class="form-label" id="supportCatLabel">Выберите тему:</label>
+            <div class="support-chips-grid" id="supportChipsGrid">
+              <button type="button" class="support-chip active" data-cat="💡 Идея / Предложение">💡 Идея</button>
+              <button type="button" class="support-chip" data-cat="❓ Вопрос">❓ Вопрос</button>
+              <button type="button" class="support-chip" data-cat="🐛 Ошибка / Баг">🐛 Ошибка</button>
+              <button type="button" class="support-chip" data-cat="💌 Отзыв">💌 Отзыв</button>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-top: 14px;">
+            <label class="form-label" for="supportMessageInput" id="supportMsgLabel">Ваше сообщение:</label>
+            <textarea id="supportMessageInput" class="support-textarea" rows="4" placeholder="Опишите вашу идею, вопрос или пожелание..."></textarea>
+          </div>
+
+          <div class="support-actions-row">
+            <button type="button" class="btn-direct-tg" id="btnDirectTg">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.75-.55 2.93-1.28 4.88-2.12 5.86-2.54 2.79-1.17 3.37-1.37 3.75-1.37.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/></svg>
+              <span id="btnDirectTgSpan">Написать в Telegram</span>
+            </button>
+            <button type="button" class="btn-submit-action" id="btnSendSupport">
+              <span id="btnSendSupportSpan">Отправить</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Modal: Change / Edit Card Category -->
+    <div class="modal-backdrop" id="modalCategoryPicker" style="display: none;">
+      <div class="modal-card modal-card-category">
+        <div class="modal-drag-indicator"></div>
+        <div class="modal-top-bar">
+          <div class="modal-title-wrap">
+            <span class="modal-icon-badge">🏷️</span>
+            <div class="modal-title-text">
+              <h3 id="modalCatPickerTitle">Категория карточки</h3>
+              <p class="modal-subtitle" id="modalCatPickerSubtitle">Выберите тему или введите свою</p>
+            </div>
+          </div>
+          <button class="modal-close-btn" id="btnCloseCatPickerModal" aria-label="Закрыть">✕</button>
+        </div>
+
+        <div class="modal-content-body">
+          <!-- Current card phrase preview -->
+          <div class="cat-picker-phrase-preview">
+            <span class="cat-preview-label" id="lblCatPickerPhrase">Фраза:</span>
+            <strong id="catPickerPhrasePreview">...</strong>
+          </div>
+
+          <!-- Predefined & Existing categories -->
+          <label class="form-label" id="lblCatPickerSelect">Выберите категорию:</label>
+          <div class="cat-picker-chips-grid" id="catPickerChipsGrid">
+            <!-- Dynamically populated chips -->
+          </div>
+
+          <!-- Custom Category Input -->
+          <div class="form-group" style="margin-top: 14px;">
+            <label class="form-label" for="customCategoryInput" id="lblCatPickerCustom">Или введите свою категорию:</label>
+            <div class="input-with-actions">
+              <input type="text" id="customCategoryInput" placeholder="например: Путешествия" autocomplete="off" />
+            </div>
+          </div>
+
+          <div class="cat-picker-actions">
+            <button type="button" class="btn-clear-category" id="btnRemoveCategory">
+              <span id="lblBtnRemoveCategory">Без категории</span>
+            </button>
+            <button type="button" class="btn-submit-action" id="btnSaveCardCategory">
+              <span id="lblBtnSaveCategory">Сохранить</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Exit Workout Confirmation -->
+    <div class="modal-backdrop" id="modalExitWorkoutConfirm" style="display: none;">
+      <div class="modal-card modal-card-confirm">
+        <div class="modal-drag-indicator"></div>
+        <div class="modal-top-bar">
+          <div class="modal-title-wrap">
+            <span class="modal-icon-badge">⏸️</span>
+            <div class="modal-title-text">
+              <h3>Выход из тренировки</h3>
+              <p class="modal-subtitle">Завершить тренировку с сохранением результата?</p>
+            </div>
+          </div>
+          <button class="modal-close-btn" id="btnCloseExitModal" aria-label="Отмена">✕</button>
+        </div>
+        <div class="modal-content-body">
+          <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 20px;">
+            Все выученные карточки с зелёными отметками останутся сохранены в базе и обновят статус ваших групп.
+          </p>
+          <div class="modal-confirm-actions">
+            <button type="button" class="btn-cancel-action" id="btnExitWorkoutCancel">Нет, продолжить</button>
+            <button type="button" class="btn-submit-action" id="btnExitWorkoutConfirm">Да, сохранить</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Edit Group Name -->
+    <div class="modal-backdrop" id="modalEditGroupName" style="display: none;">
+      <div class="modal-card modal-card-rename">
+        <div class="modal-drag-indicator"></div>
+        <div class="modal-top-bar">
+          <div class="modal-title-wrap">
+            <span class="modal-icon-badge">✏️</span>
+            <div class="modal-title-text">
+              <h3>Переименовать группу</h3>
+              <p class="modal-subtitle">Задайте удобное название для этой пачки фраз</p>
+            </div>
+          </div>
+          <button class="modal-close-btn" id="btnCloseRenameModal" aria-label="Закрыть">✕</button>
+        </div>
+        <div class="modal-content-body">
+          <div class="form-group">
+            <label class="form-label" for="editGroupNameInput">Название группы:</label>
+            <input type="text" id="editGroupNameInput" class="custom-text-input" placeholder="например: 1 группа — В аэропорту" autocomplete="off" />
+          </div>
+          <div class="modal-confirm-actions" style="margin-top: 18px;">
+            <button type="button" class="btn-cancel-action" id="btnCancelRenameGroup">Отмена</button>
+            <button type="button" class="btn-submit-action" id="btnSaveGroupName">Сохранить</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Popup: Group Completed Notification (when last card turns green) -->
+    <div class="group-mastered-toast" id="popupGroupCompleted" style="display: none;">
+      <div class="toast-content">
+        <span class="toast-icon">🎉</span>
+        <div class="toast-text-wrap">
+          <strong id="toastGroupTitle">Вы выучили 1 группу!</strong>
+          <span>Все 10 фраз успешно закрыты на отлично! 🏆</span>
+        </div>
+      </div>
+      <button type="button" class="toast-close-btn" id="btnCloseGroupToast" aria-label="Закрыть">✕</button>
+    </div>
+
+    <!-- Knowledge Status Tooltip Popup -->
+    <div class="knowledge-tooltip" id="knowledgeTooltip" style="display: none;">
+      <div class="tooltip-body" id="knowledgeTooltipBody">
+        <!-- Text injected by JS -->
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Onboarding Spotlight Dark Overlay -->
+  <div class="onboarding-spotlight-overlay" id="onboardingSpotlight" style="display: none;"></div>
+
+  <script src="/app.js?v=17.0"></script>
+</body>
+</html>

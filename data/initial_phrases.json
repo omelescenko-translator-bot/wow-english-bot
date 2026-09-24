@@ -1,0 +1,382 @@
+[
+  {
+    "phrase_en": "Let's meet between Ljubljana and Vienna.",
+    "phrase_ru": "Давай встретимся между Любляной и Веной.",
+    "category": "Разговорный / Общее"
+  },
+  {
+    "phrase_en": "Please write everything in lower case.",
+    "phrase_ru": "Пожалуйста, пишите всё маленькими буквами.",
+    "category": "Разговорный / Общее"
+  },
+  {
+    "phrase_en": "Please start the sentence with a capital letter.",
+    "phrase_ru": "Пожалуйста, начните предложение с заглавной буквы.",
+    "category": "Разговорный / Общее"
+  },
+  {
+    "phrase_en": "Instead of water, I prefer coffee.",
+    "phrase_ru": "Вместо воды я предпочитаю кофе.",
+    "category": "Разговорный / Общее"
+  },
+  {
+    "phrase_en": "I apologize for the inconvenience.",
+    "phrase_ru": "Я извиняюсь за неудобства.",
+    "category": "Деловая переписка"
+  },
+  {
+    "phrase_en": "It depends on time.",
+    "phrase_ru": "Это зависит от времени.",
+    "category": "Разговорный / Общее"
+  },
+  {
+    "phrase_en": "The goods will be delivered at your convenience.",
+    "phrase_ru": "Товары будут доставлены, когда вам будет удобно.",
+    "category": "Разговорный / Общее"
+  },
+  {
+    "phrase_en": "Why do I study a lot and earn less?",
+    "phrase_ru": "Почему я много учусь, а зарабатываю меньше?",
+    "category": "Разговорный / Общее"
+  },
+  {
+    "phrase_en": "The client complained.",
+    "phrase_ru": "Клиент пожаловался.",
+    "category": "Разговорный / Общее"
+  },
+  {
+    "phrase_en": "The salary is important to each person.",
+    "phrase_ru": "Зарплата важна для каждого человека.",
+    "category": "Разговорный / Общее"
+  },
+  {
+    "phrase_en": "I look forward to hearing from you.",
+    "phrase_ru": "С нетерпением жду вашего ответа.",
+    "category": "Деловая переписка"
+  },
+  {
+    "phrase_en": "We need to compare prices.",
+    "phrase_ru": "Нам нужно сравнить цены.",
+    "category": "Логистика и ВЭД"
+  },
+  {
+    "phrase_en": "How much time did it take?",
+    "phrase_ru": "Сколько времени это заняло?",
+    "category": "Разговорный / Общее"
+  },
+  {
+    "phrase_en": "It took me 10 hours.",
+    "phrase_ru": "Это заняло у меня 10 часов.",
+    "category": "Разговорный / Общее"
+  },
+  {
+    "phrase_en": "Can we improve delivery for the next order?",
+    "phrase_ru": "Можем ли мы улучшить доставку для следующего заказа?",
+    "category": "Логистика и ВЭД"
+  },
+  {
+    "phrase_en": "Can we find a solution?",
+    "phrase_ru": "Можем ли мы найти решение?",
+    "category": "Разговорный / Общее"
+  },
+  {
+    "phrase_en": "Get used to my hair now.",
+    "phrase_ru": "Привыкай к моим волосам сейчас.",
+    "category": "Разговорный / Общее"
+  },
+  {
+    "phrase_en": "To keep you posted.",
+    "phrase_ru": "Чтобы держать тебя в курсе.",
+    "category": "Деловая переписка"
+  },
+  {
+    "phrase_en": "The shipment is stuck at customs clearance.",
+    "phrase_ru": "Груз застрял на таможенном оформлении.",
+    "category": "Логистика и ВЭД"
+  },
+  {
+    "phrase_en": "This item is currently out of stock.",
+    "phrase_ru": "Этой позиции сейчас нет на складе.",
+    "category": "Логистика и ВЭД"
+  },
+  {
+    "phrase_en": "We need to shorten the lead time.",
+    "phrase_ru": "Нам нужно сократить срок выполнения/поставки.",
+    "category": "Логистика и ВЭД"
+  },
+  {
+    "phrase_en": "Delivery is delayed.",
+    "phrase_ru": "Доставка задерживается.",
+    "category": "Логистика и ВЭД"
+  },
+  {
+    "phrase_en": "Will it be convenient for you?",
+    "phrase_ru": "Будет ли это удобно для вас?",
+    "category": "Разговорный / Общее"
+  },
+  {
+    "phrase_en": "This is urgent.",
+    "phrase_ru": "Это срочно.",
+    "category": "Разговорный / Общее"
+  },
+  {
+    "phrase_en": "Sea freight, Railway freight, Road freight, Air freight.",
+    "phrase_ru": "Морской фрахт, ж/д фрахт, автодоставка, авиафрахт.",
+    "category": "Логистика и ВЭД"
+  },
+  {
+    "phrase_en": "freight rate",
+    "phrase_ru": "Тарифная ставка на перевозку (стоимость фрахта).",
+    "category": "Логистика и ВЭД"
+  },
+  {
+    "phrase_en": "Deal with problems.",
+    "phrase_ru": "Разбираться с проблемами.",
+    "category": "Разговорный / Общее"
+  },
+  {
+    "phrase_en": "I can deal with problems on my own.",
+    "phrase_ru": "Я могу разбираться с проблемами самостоятельно.",
+    "category": "Разговорный / Общее"
+  },
+  {
+    "phrase_en": "I need to deal with this invoice first.",
+    "phrase_ru": "Мне нужно сначала разобраться с этим инвойсом.",
+    "category": "Логистика и ВЭД"
+  },
+  {
+    "phrase_en": "I'll set it up.",
+    "phrase_ru": "Я всё организую / устрою / настрою.",
+    "category": "Разговорный / Общее"
+  },
+  {
+    "phrase_en": "Honestly",
+    "phrase_ru": "Честно говоря / честно.",
+    "category": "Разговорный / Общее"
+  },
+  {
+    "phrase_en": "Actually",
+    "phrase_ru": "На самом деле / вообще-то.",
+    "category": "Разговорный / Общее"
+  },
+  {
+    "phrase_en": "It depends on many things.",
+    "phrase_ru": "Это зависит от многих вещей.",
+    "category": "Разговорный / Общее"
+  },
+  {
+    "phrase_en": "From time to time.",
+    "phrase_ru": "Время от времени.",
+    "category": "Разговорный / Общее"
+  },
+  {
+    "phrase_en": "I'm confused.",
+    "phrase_ru": "Я в замешательстве / запуталась.",
+    "category": "Разговорный / Общее"
+  },
+  {
+    "phrase_en": "we are going to accept their offer",
+    "phrase_ru": "Мы собираемся принять их предложение",
+    "category": "Деловая переписка"
+  },
+  {
+    "phrase_en": "to accept a job offer",
+    "phrase_ru": "принять предложение о работе",
+    "category": "Разговорный / Общее"
+  },
+  {
+    "phrase_en": "give me an access to...",
+    "phrase_ru": "Предоставьте мне доступ к...",
+    "category": "Деловая переписка"
+  },
+  {
+    "phrase_en": "only he has an access to the programm",
+    "phrase_ru": "Только у него есть доступ к программе",
+    "category": "Деловая переписка"
+  },
+  {
+    "phrase_en": "she was very successful at her job",
+    "phrase_ru": "Она успешна на своей работе",
+    "category": "Разговорный / Общее"
+  },
+  {
+    "phrase_en": "what is Peter repairing?",
+    "phrase_ru": "Что Питер чинит?",
+    "category": "Разговорный / Общее"
+  },
+  {
+    "phrase_en": "Are you ready yet",
+    "phrase_ru": "Ты уже готов?",
+    "category": "Разговорный / Общее"
+  },
+  {
+    "phrase_en": "I think my English is improving slowly",
+    "phrase_ru": "Я думаю, мой английский улучшается медленно",
+    "category": "Разговорный / Общее"
+  },
+  {
+    "phrase_en": "What do you do in your spare time?",
+    "phrase_ru": "Что вы делаете в свободное время?",
+    "category": "Разговорный / Общее"
+  },
+  {
+    "phrase_en": "I am writing to update you on the project",
+    "phrase_ru": "Я пишу, чтобы ввести вас в курс дела по проекту",
+    "category": "Деловая переписка"
+  },
+  {
+    "phrase_en": "This job ad has expired",
+    "phrase_ru": "Вакансия закрыта",
+    "category": "Собеседование"
+  },
+  {
+    "phrase_en": "What is your greatest strength?",
+    "phrase_ru": "В чем ваша сильная сторона?",
+    "category": "Собеседование"
+  },
+  {
+    "phrase_en": "What are your weaknesses?",
+    "phrase_ru": "Какие ваши слабые стороны?",
+    "category": "Собеседование"
+  },
+  {
+    "phrase_en": "What has disappointed you about your job?",
+    "phrase_ru": "Что вас разочаровало в вашей работе?",
+    "category": "Разговорный / Общее"
+  },
+  {
+    "phrase_en": "What has been your biggest achievement at work?",
+    "phrase_ru": "Каким было самое большое ваше достижение?",
+    "category": "Собеседование"
+  },
+  {
+    "phrase_en": "Why are you leaving your current position?",
+    "phrase_ru": "Почему вы покидаете ваше текущее место работы?",
+    "category": "Собеседование"
+  },
+  {
+    "phrase_en": "What would make you stay at your previous job?",
+    "phrase_ru": "Что могло бы заставить вас остаться на предыдущей работе?",
+    "category": "Собеседование"
+  },
+  {
+    "phrase_en": "Why should we hire you?",
+    "phrase_ru": "Почему нам стоит вас нанять?",
+    "category": "Собеседование"
+  },
+  {
+    "phrase_en": "What are you looking for in terms of career development?",
+    "phrase_ru": "К чему вы стремитесь с точки зрения карьерного роста?",
+    "category": "Собеседование"
+  },
+  {
+    "phrase_en": "I'm not fully satisfied with the work I'm doing",
+    "phrase_ru": "Я не полностью удовлетворен той работой, которую выполняю.",
+    "category": "Разговорный / Общее"
+  },
+  {
+    "phrase_en": "I have an ability to work under pressure",
+    "phrase_ru": "У меня есть способность работы под давлением",
+    "category": "Собеседование"
+  },
+  {
+    "phrase_en": "I am rather good at working in a team",
+    "phrase_ru": "Я довольно хорошо умею работать в команде",
+    "category": "Собеседование"
+  },
+  {
+    "phrase_en": "In my most recent job, I was involved in training the staff",
+    "phrase_ru": "На своей предыдущей работе я участвовала в обучении персонала",
+    "category": "Собеседование"
+  },
+  {
+    "phrase_en": "In my most recent job, I was involved in managment of branch office.",
+    "phrase_ru": "На своей предыдущей работе я участвовала в управлении филиалом.",
+    "category": "Собеседование"
+  },
+  {
+    "phrase_en": "I consider myself a responsible person.",
+    "phrase_ru": "Я считаю себя ответственным человеком",
+    "category": "Собеседование"
+  },
+  {
+    "phrase_en": "From start to finish",
+    "phrase_ru": "От начала до конца",
+    "category": "Разговорный / Общее"
+  },
+  {
+    "phrase_en": "Do you mind I open the window?",
+    "phrase_ru": "Вы не против, если я открою окно?",
+    "category": "Разговорный / Общее"
+  },
+  {
+    "phrase_en": "I'm really into yoga",
+    "phrase_ru": "Я очень увлекаюсь йогой",
+    "category": "Разговорный / Общее"
+  },
+  {
+    "phrase_en": "improved",
+    "phrase_ru": "улучшенный",
+    "category": "Разговорный / Общее"
+  },
+  {
+    "phrase_en": "meet / reach goals",
+    "phrase_ru": "достигать целей",
+    "category": "Разговорный / Общее"
+  },
+  {
+    "phrase_en": "I'm between the jobs",
+    "phrase_ru": "Я сейчас в поиске работы",
+    "category": "Собеседование"
+  },
+  {
+    "phrase_en": "I have several years of experience in supply chain management.",
+    "phrase_ru": "У меня есть несколько лет опыта работы в сфере управления цепочками поставок.",
+    "category": "Логистика и ВЭД"
+  },
+  {
+    "phrase_en": "I have managed teams of up to 10 staff.",
+    "phrase_ru": "Я руководил командами численностью ДО 10 человек.",
+    "category": "Собеседование"
+  },
+  {
+    "phrase_en": "a few things came up",
+    "phrase_ru": "Возникли некоторые обстоятельства",
+    "category": "Разговорный / Общее"
+  },
+  {
+    "phrase_en": "urgent delivery",
+    "phrase_ru": "Срочная доставка",
+    "category": "Логистика и ВЭД"
+  },
+  {
+    "phrase_en": "He replied me",
+    "phrase_ru": "Он ответил мне",
+    "category": "Разговорный / Общее"
+  },
+  {
+    "phrase_en": "Does that rule still apply",
+    "phrase_ru": "Эти договоренности ещё действительны?",
+    "category": "Деловая переписка"
+  },
+  {
+    "phrase_en": "Please check these points and let me know",
+    "phrase_ru": "Пожалуйста проверьте эти пункты/моменты и дайте знать",
+    "category": "Деловая переписка"
+  },
+  {
+    "phrase_en": "product range",
+    "phrase_ru": "Продуктовая линейка",
+    "category": "Разговорный / Общее"
+  },
+  {
+    "phrase_en": "postpone a meeting",
+    "phrase_ru": "Перенести встречу",
+    "category": "Деловая переписка"
+  },
+  {
+    "phrase_en": "school principal",
+    "phrase_ru": "Директор школы",
+    "category": "Разговорный / Общее"
+  }
+]
