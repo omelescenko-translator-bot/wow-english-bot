@@ -1,11 +1,20 @@
 # -*- coding: utf-8 -*-
+import os
+import sys
+
+try:
+    if hasattr(sys.stdout, 'reconfigure'):
+        sys.stdout.reconfigure(encoding='utf-8')
+    if hasattr(sys.stderr, 'reconfigure'):
+        sys.stderr.reconfigure(encoding='utf-8')
+except Exception:
+    pass
+
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from typing import List, Optional
-import os
-import sys
 
 from database.db import (
     get_all_cards, add_card, update_card_review, set_card_status, get_stats, get_or_create_user,

@@ -173,6 +173,14 @@ def set_user_languages(user_id: int, native_lang: str, target_lang: str):
     conn.close()
     return {'native_lang': n_lang, 'target_lang': t_lang}
 
+def get_all_user_ids():
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT DISTINCT user_id FROM users')
+    rows = cursor.fetchall()
+    conn.close()
+    return [r['user_id'] for r in rows if r['user_id']]
+
 def add_card(user_id: int, phrase_en: str, phrase_ru: str, category: str = 'Общее', status: str = 'learning', target_lang: str = 'en', native_lang: str = 'ru'):
     phrase_en = phrase_en.strip()
     phrase_ru = phrase_ru.strip()

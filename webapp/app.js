@@ -1492,18 +1492,60 @@ function initLanguagePicker() {
   updateLanguageUI();
 }
 
-// --- Data Fetching ---
-async function loadData() {
+// --- Network Resilience & Safe Fetch ---
+async function safeFetch(url, options = {}, retries = 3, delay = 500) {
+  for (let i = 0; i < retries; i++) {
+    try {
+      const res = await fetch(url, options);
+      if (res.ok) return res;
+      if (res.status >= 400 && res.status < 500 && res.status !== 408) {
+        return res; // Client error - do not retry endlessly
+      }
+    } catch (e) {
+      if (i === retries - 1) throw e;
+    }
+    await new Promise(r => setTimeout(r, delay * Math.pow(1.5, i)));
+  }
+  return await fetch(url, options);
+}
+
+// --- Data Fetching with LocalStorage Cache & Background Sync ---
+async function loadData(silent = false) {
+  const cacheKey = `wow_cards_cache_${userId}_${currentTargetLang}_${currentNativeLang}`;
+  
+  // 1. Instant Local Cache Hydration (0ms initial render)
+  if (!silent && (!allCards || allCards.length === 0)) {
+    try {
+      const cached = localStorage.getItem(cacheKey);
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          allCards = parsed;
+          updateCounters();
+          applyFilter(currentFilter);
+          renderDictionary();
+        }
+      }
+    } catch (e) {
+      console.warn('Cache read error:', e);
+    }
+  }
+
+  // 2. Fetch fresh data from API with retry
   try {
-    const res = await fetch(`/api/cards?user_id=${userId}&target_lang=${currentTargetLang}&native_lang=${currentNativeLang}&shuffle=false`);
+    const res = await safeFetch(`/api/cards?user_id=${userId}&target_lang=${currentTargetLang}&native_lang=${currentNativeLang}&shuffle=false`, {}, 3, 400);
     if (res.ok) {
-      allCards = await res.json();
+      const freshCards = await res.json();
+      allCards = freshCards;
+      try {
+        localStorage.setItem(cacheKey, JSON.stringify(freshCards));
+      } catch (e) {}
     } else {
-      throw new Error('API offline');
+      console.warn('Cards API returned non-OK status:', res.status);
     }
   } catch (e) {
-    console.warn('Could not fetch cards from API:', e);
-    allCards = [];
+    console.warn('Network issue fetching cards, keeping cached/existing deck:', e);
+    // CRITICAL: NEVER wipe allCards = [] on network error!
   }
   
   updateCounters();
@@ -1512,7 +1554,7 @@ async function loadData() {
   await fetchAndRenderGroups();
   await loadRedWords();
   renderDictionary();
-  loadStats();
+  await loadStats();
   if (typeof currentTrainerStep !== 'undefined' && currentTrainerStep === 2) {
     renderTrainerGroupsChecklist();
     updateStep2SelectionSummary();
@@ -1541,10 +1583,23 @@ function updateCounters() {
 }
 
 async function loadStats() {
+  const statsKey = `wow_stats_cache_${userId}_${currentTargetLang}_${currentNativeLang}`;
+  
+  // Hydrate stats from cache first
   try {
-    const res = await fetch(`/api/stats?user_id=${userId}&target_lang=${currentTargetLang}&native_lang=${currentNativeLang}`);
+    const cachedStats = localStorage.getItem(statsKey);
+    if (cachedStats) {
+      const s = JSON.parse(cachedStats);
+      if (statStreak) statStreak.textContent = s.streak || 1;
+      if (streakDays) streakDays.textContent = s.streak || 1;
+    }
+  } catch (e) {}
+
+  try {
+    const res = await safeFetch(`/api/stats?user_id=${userId}&target_lang=${currentTargetLang}&native_lang=${currentNativeLang}`, {}, 2, 400);
     if (res.ok) {
       const s = await res.json();
+      try { localStorage.setItem(statsKey, JSON.stringify(s)); } catch (e) {}
       if (statStreak) statStreak.textContent = s.streak || 1;
       if (streakDays) streakDays.textContent = s.streak || 1;
       if (s.native_lang && !localStorage.getItem('wow_native_lang')) {
@@ -2278,49 +2333,59 @@ async function fetchAndRenderCategories() {
     return;
   }
 
+  const catKey = `wow_categories_cache_${userId}_${currentTargetLang}_${currentNativeLang}`;
   try {
-    const res = await fetch(`/api/categories?user_id=${userId}&target_lang=${currentTargetLang}&native_lang=${currentNativeLang}`);
+    const cached = localStorage.getItem(catKey);
+    if (cached && (!userCategories || userCategories.length === 0)) {
+      userCategories = JSON.parse(cached);
+    }
+  } catch (e) {}
+
+  try {
+    const res = await safeFetch(`/api/categories?user_id=${userId}&target_lang=${currentTargetLang}&native_lang=${currentNativeLang}`, {}, 2, 400);
     if (res.ok) {
       const data = await res.json();
       userCategories = data.categories || [];
-      if (userCategories.length > 0) {
-        categoryFilterCarousel.style.display = 'flex';
-        categoryFilterCarousel.innerHTML = '';
-        
-        const allBtn = document.createElement('button');
-        allBtn.className = `chip-filter ${currentCategory === 'all' ? 'active' : ''}`;
-        allBtn.dataset.cat = 'all';
-        allBtn.textContent = 'Все категории';
-        allBtn.addEventListener('click', () => {
-          haptic('light');
-          document.querySelectorAll('.chip-filter').forEach(c => c.classList.remove('active'));
-          allBtn.classList.add('active');
-          currentCategory = 'all';
-          renderDictionary();
-        });
-        categoryFilterCarousel.appendChild(allBtn);
-
-        userCategories.forEach(cat => {
-          const btn = document.createElement('button');
-          btn.className = `chip-filter ${currentCategory === cat ? 'active' : ''}`;
-          btn.dataset.cat = cat;
-          btn.textContent = cat;
-          btn.addEventListener('click', () => {
-            haptic('light');
-            document.querySelectorAll('.chip-filter').forEach(c => c.classList.remove('active'));
-            btn.classList.add('active');
-            currentCategory = cat;
-            renderDictionary();
-          });
-          categoryFilterCarousel.appendChild(btn);
-        });
-      } else {
-        categoryFilterCarousel.style.display = 'none';
-        currentCategory = 'all';
-      }
+      try { localStorage.setItem(catKey, JSON.stringify(userCategories)); } catch (e) {}
     }
   } catch (e) {
     console.error('Error fetching categories:', e);
+  }
+
+  if (userCategories && userCategories.length > 0) {
+    categoryFilterCarousel.style.display = 'flex';
+    categoryFilterCarousel.innerHTML = '';
+    
+    const allBtn = document.createElement('button');
+    allBtn.className = `chip-filter ${currentCategory === 'all' ? 'active' : ''}`;
+    allBtn.dataset.cat = 'all';
+    allBtn.textContent = 'Все категории';
+    allBtn.addEventListener('click', () => {
+      haptic('light');
+      document.querySelectorAll('.chip-filter').forEach(c => c.classList.remove('active'));
+      allBtn.classList.add('active');
+      currentCategory = 'all';
+      renderDictionary();
+    });
+    categoryFilterCarousel.appendChild(allBtn);
+
+    userCategories.forEach(cat => {
+      const btn = document.createElement('button');
+      btn.className = `chip-filter ${currentCategory === cat ? 'active' : ''}`;
+      btn.dataset.cat = cat;
+      btn.textContent = cat;
+      btn.addEventListener('click', () => {
+        haptic('light');
+        document.querySelectorAll('.chip-filter').forEach(c => c.classList.remove('active'));
+        btn.classList.add('active');
+        currentCategory = cat;
+        renderDictionary();
+      });
+      categoryFilterCarousel.appendChild(btn);
+    });
+  } else {
+    categoryFilterCarousel.style.display = 'none';
+    currentCategory = 'all';
   }
 }
 
@@ -3727,10 +3792,20 @@ function initDictSubtabs() {
 }
 
 async function fetchAndRenderGroups() {
+  const groupsKey = `wow_groups_cache_${userId}_${currentTargetLang}_${currentNativeLang}`;
   try {
-    const res = await fetch(`/api/groups?user_id=${userId}&target_lang=${currentTargetLang}&native_lang=${currentNativeLang}`);
+    const cached = localStorage.getItem(groupsKey);
+    if (cached && (!userGroups || userGroups.length === 0)) {
+      userGroups = JSON.parse(cached);
+      renderGroupsList();
+    }
+  } catch (e) {}
+
+  try {
+    const res = await safeFetch(`/api/groups?user_id=${userId}&target_lang=${currentTargetLang}&native_lang=${currentNativeLang}`, {}, 2, 400);
     if (res.ok) {
       userGroups = await res.json();
+      try { localStorage.setItem(groupsKey, JSON.stringify(userGroups)); } catch (e) {}
       renderGroupsList();
     }
   } catch (e) {
@@ -4296,11 +4371,21 @@ async function loadTrainerSetup() {
 }
 
 async function loadRedWords() {
+  const redKey = `wow_red_cards_cache_${userId}_${currentTargetLang}_${currentNativeLang}`;
   try {
-    const res = await fetch(`/api/cards/red?user_id=${userId}&target_lang=${currentTargetLang}&native_lang=${currentNativeLang}`);
+    const cached = localStorage.getItem(redKey);
+    if (cached && (!redCardsList || redCardsList.length === 0)) {
+      redCardsList = JSON.parse(cached);
+      const badgeStep1 = document.getElementById('badgeRedCardsStep1');
+      if (badgeStep1) badgeStep1.textContent = `${redCardsList.length} фраз`;
+    }
+  } catch (e) {}
+
+  try {
+    const res = await safeFetch(`/api/cards/red?user_id=${userId}&target_lang=${currentTargetLang}&native_lang=${currentNativeLang}`, {}, 2, 400);
     if (res.ok) {
       redCardsList = await res.json();
-      
+      try { localStorage.setItem(redKey, JSON.stringify(redCardsList)); } catch (e) {}
       const badgeStep1 = document.getElementById('badgeRedCardsStep1');
       if (badgeStep1) badgeStep1.textContent = `${redCardsList.length} фраз`;
     }
@@ -5489,6 +5574,30 @@ function initWorkoutSoundToggle() {
   }
 }
 
+// --- Continuous Lifecycle Sync & Re-entry Handler ---
+let syncDebounceTimer = null;
+function syncDataInBackground() {
+  clearTimeout(syncDebounceTimer);
+  syncDebounceTimer = setTimeout(() => {
+    loadData(true);
+  }, 300);
+}
+
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') {
+    syncDataInBackground();
+  }
+});
+window.addEventListener('pageshow', () => {
+  syncDataInBackground();
+});
+window.addEventListener('focus', () => {
+  syncDataInBackground();
+});
+window.addEventListener('online', () => {
+  syncDataInBackground();
+});
+
 // Initialize on Load
 initLanguagePicker();
 initSupportModal();
@@ -5499,4 +5608,5 @@ initTrainerModule();
 initFastScroller();
 loadData();
 checkAdminAccess();
+
 
