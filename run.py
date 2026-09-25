@@ -58,12 +58,29 @@ def free_port_8000():
         if sys.platform == 'win32':
             subprocess.run(['taskkill', '/F', '/IM', 'cloudflared.exe'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
             subprocess.run(['taskkill', '/F', '/IM', 'ssh.exe'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            
+            current_pid = os.getpid()
+            try:
+                out = subprocess.check_output(['wmic', 'process', 'where', "name='python.exe'", 'get', 'processid,commandline'], encoding='cp866', errors='ignore')
+                for line in out.splitlines():
+                    line = line.strip()
+                    if not line or 'CommandLine' in line:
+                        continue
+                    parts = line.split()
+                    pid = parts[-1]
+                    cmd = " ".join(parts[:-1])
+                    if pid.isdigit() and int(pid) != current_pid and ('run.py' in cmd or 'server.py' in cmd or 'bot.py' in cmd):
+                        subprocess.run(['taskkill', '/F', '/T', '/PID', pid], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            except Exception:
+                pass
+
             res = subprocess.run(['netstat', '-ano'], capture_output=True, encoding='cp866', errors='ignore')
             for line in (res.stdout or '').splitlines():
                 if ':8000' in line and 'LISTENING' in line:
                     parts = line.strip().split()
                     pid = parts[-1]
-                    subprocess.run(['taskkill', '/F', '/PID', pid], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                    if pid.isdigit() and int(pid) != current_pid:
+                        subprocess.run(['taskkill', '/F', '/PID', pid], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     except Exception:
         pass
 
